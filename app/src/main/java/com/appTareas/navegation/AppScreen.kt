@@ -7,5 +7,5 @@ sealed class AppScreen(
     object RegisterScreen: AppScreen("RegisterScreen")
     object AdminScreen: AppScreen("AdminScreen")
     object TareasScreen: AppScreen("TareasScreen")
-    object WelcomeScreen : AppScreen("WelcomeScreen")
+
 }

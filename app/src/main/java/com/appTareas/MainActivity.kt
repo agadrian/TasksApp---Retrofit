@@ -58,7 +58,6 @@ class MainActivity : ComponentActivity() {
                             val currentDestination = navBackStackEntry?.destination?.route
                             val shouldDisplayBottomBar = when (currentDestination) {
                                 AppScreen.TareasScreen.route,
-                                AppScreen.WelcomeScreen.route,
                                 AppScreen.AdminScreen.route -> true
                                 else -> false
                             }
