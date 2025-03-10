@@ -1,43 +1,28 @@
 package com.appTareas.navegation
 
-import android.provider.CalendarContract.Colors
 import androidx.compose.foundation.background
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.BorderColor
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.PersonAddAlt1
 import androidx.compose.material.icons.filled.Task
 import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.appTareas.model.NavItem
 import com.appTareas.screens.adminScreen.AdminScreen
 import com.appTareas.screens.adminScreen.AdminScreenViewModel
@@ -47,12 +32,6 @@ import com.appTareas.screens.registerScreen.RegisterScreen
 import com.appTareas.screens.registerScreen.RegisterViewModel
 import com.appTareas.screens.tareasScreen.TareasScreen
 import com.appTareas.screens.tareasScreen.TareasScreenViewModel
-import com.appTareas.screens.welcomeScreen.WelcomeScreen
-import com.appTareas.screens.welcomeScreen.WelcomeScreenViewModel
-import kotlinx.coroutines.selects.select
-import kotlin.math.log
-
-
 
 
 @Composable
@@ -61,7 +40,6 @@ fun AppNavigation(
     navController: NavHostController,
     loginScreenViewModel: LoginScreenViewModel,
     registerViewModel: RegisterViewModel,
-    welcomeScreenViewModel: WelcomeScreenViewModel,
     adminViewModel: AdminScreenViewModel,
     tareasScreenViewModel: TareasScreenViewModel,
     isDarkMode: Boolean,
@@ -103,7 +81,6 @@ fun AppNavigation(
             route = AppScreen.AdminScreen.route
         ){
             AdminScreen(
-                navController = navController,
                 adminScreenViewModel = adminViewModel
             )
         }
@@ -114,21 +91,10 @@ fun AppNavigation(
             route = AppScreen.TareasScreen.route
         ){
             TareasScreen(
-                tareasViewModel = tareasScreenViewModel,
-                navController = navController,
+                tareasViewModel = tareasScreenViewModel
             )
         }
 
-
-        composable(
-            route = AppScreen.WelcomeScreen.route
-        ){
-            WelcomeScreen(
-                navController = navController,
-                welcomeScreenViewModel = welcomeScreenViewModel,
-                modifier = modifier
-            )
-        }
     }
 
 }

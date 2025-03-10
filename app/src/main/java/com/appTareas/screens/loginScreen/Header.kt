@@ -62,18 +62,6 @@ fun Header(
             .padding(top = 40.dp, bottom = 10.dp, start = 40.dp, end = 40.dp)
     ){
 
-//        Image(
-//            painter = if (isDarkMode){
-//                painterResource(R.drawable.logo_dark)
-//            }else{
-//                painterResource(R.drawable.logo_claro)
-//            }
-//            ,
-//            contentDescription = "Logo spotify",
-//            modifier = Modifier
-//                .align(Alignment.Center)
-//                .size(32.dp)
-//        )
 
         DarkModeSwitch(
             isDarkMode = isDarkMode,
@@ -129,7 +117,7 @@ fun DarkModeSwitch(
     ){
 
         Text(
-            text = if (isDarkMode) "Modo claro" else "Modo oscuro",
+            text = if (isDarkMode) "Light mode" else "Dark mode",
             color = MaterialTheme.colorScheme.onPrimary,
             fontSize = 12.sp
         )

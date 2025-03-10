@@ -1,6 +1,5 @@
 package com.appTareas.screens.tareasScreen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
@@ -29,35 +27,33 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import com.appTareas.R
+import com.appTareas.utils.ErrorDialog
 
 
 @Composable
 fun TareasScreen(
-    tareasViewModel: TareasScreenViewModel,
-    navController: NavController
+    tareasViewModel: TareasScreenViewModel
 ) {
 
     val tasks by tareasViewModel.tasks.collectAsState()
     val errorMessage by tareasViewModel.errorMessage.collectAsState()
 
-    var titulo by remember { mutableStateOf("") }
-    var descripcion by remember { mutableStateOf("") }
-    val showDialog = remember { mutableStateOf(false) }
+    val titulo by tareasViewModel.titulo.collectAsState()
+    val descripcion by tareasViewModel.descripcion.collectAsState()
+    val showDialog by tareasViewModel.showDialog.collectAsState()
 
-    val showErrorDialog = remember { mutableStateOf(false) }
+    val tareasResult by tareasViewModel.tareasResult.observeAsState()
+    val showErrorDialog by tareasViewModel.showErrorDialog.collectAsState()
+
+
 
 
     Box(
@@ -65,7 +61,13 @@ fun TareasScreen(
             .fillMaxSize()
 
     ){
-        Column(modifier = Modifier.fillMaxSize().padding(top = 60.dp, start = 30.dp, end = 30.dp)) {
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 60.dp, start = 30.dp, end = 30.dp, bottom = 80.dp)
+
+        ) {
 
             Text(
                 text = "My Tasks",
@@ -85,6 +87,13 @@ fun TareasScreen(
                 Text(errorMessage!!, color = Color.Red, fontWeight = FontWeight.Bold)
             }
 
+            // Mostrar el error en un AlertDialog si hay un error
+            if (showErrorDialog && !tareasResult.isNullOrBlank()) {
+                ErrorDialog(errorMessage = tareasResult!!) {
+                    tareasViewModel.dismissErrorDialog()
+                }
+            }
+
             // Mostrar la lista de tareas
             LazyColumn {
                 items(tasks) { task ->
@@ -95,12 +104,10 @@ fun TareasScreen(
                         // Checkbox para marcar la tarea como completada
                         Checkbox(
                             checked = task.estado == "COMPLETADA",
-                            onCheckedChange = { checked ->
-                                val newEstado = if (checked) "COMPLETADA" else "PENDIENTE"
+                            onCheckedChange = {
                                 tareasViewModel.updateTaskState(
-                                    task.id ?: "",
-                                    newEstado
-                                )  // Cambiar el estado de la tarea
+                                    task.id ?: ""
+                                )
                             }
                         )
                         // Mostrar la información de la tarea
@@ -119,10 +126,11 @@ fun TareasScreen(
             }
         }
 
+        // Boton flotante para añadir tarea
         FloatingActionButton(
-            onClick = { showDialog.value = true },
+            onClick = { tareasViewModel.toggleDialog() },
             modifier = Modifier
-                .padding(bottom = 130.dp)
+                .padding(bottom = 120.dp)
                 .align(Alignment.BottomEnd),
             containerColor = MaterialTheme.colorScheme.primary
 
@@ -130,18 +138,16 @@ fun TareasScreen(
             Icon(Icons.Default.Add, contentDescription = "Add Task")
         }
 
+
         // Mostrar el cuadro de diálogo para agregar la tarea
-        if (showDialog.value) {
+        if (showDialog) {
             AddTaskDialog(
-                onDismiss = { showDialog.value = false },
-                onSave = { titulo, descripcion ->
-                    tareasViewModel.createTask(titulo, descripcion)
-                    showDialog.value = false
-                },
+                onDismiss = { tareasViewModel.closeDialog() },
+                onSave = { tareasViewModel.createTask() },
                 titulo = titulo,
                 descripcion = descripcion,
-                onTituloChange = { titulo = it },
-                onDescripcionChange = { descripcion = it }
+                onTituloChange = { tareasViewModel.onTituloChange(it) },
+                onDescripcionChange = { tareasViewModel.onDescripcionChange(it) }
             )
         }
     }
@@ -153,7 +159,7 @@ fun TareasScreen(
 @Composable
 fun AddTaskDialog(
     onDismiss: () -> Unit,
-    onSave: (String, String) -> Unit,
+    onSave: () -> Unit,
     titulo: String,
     descripcion: String,
     onTituloChange: (String) -> Unit,
@@ -202,7 +208,7 @@ fun AddTaskDialog(
             TextButton(onClick = {
                 // Llamamos a la función onSave para guardar los datos
                 if (titulo.isNotBlank() && descripcion.isNotBlank()){
-                    onSave(titulo, descripcion)
+                    onSave()
                 }
 
             }) {

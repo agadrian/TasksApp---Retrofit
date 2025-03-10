@@ -1,11 +1,19 @@
 package com.appTareas.screens.registerScreen
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,9 +23,12 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.appTareas.utils.ButtonWithEffect
 import com.appTareas.utils.CustomOutlinedTextField
 import com.appTareas.utils.ErrorDialog
 
@@ -56,27 +67,11 @@ fun RegisterScreen(
     ) {
 
 
-
-        // Si el evento de navegación es "success", navegamos a la pantalla de bienvenida
-//        LaunchedEffect(navigationEvent) {
-//            navigationEvent?.let {
-//                if (it == "success") {
-//                    // Navegar a WelcomeScreen, pasando el token o el resultado que necesites
-//                    navController.navigate(AppScreen.WelcomeScreen.createRoute(loginResult))
-//                    registerViewModel.resetNavigationEvent() // Reiniciar el evento después de consumirlo
-//                }
-//            }
-//        }
-
-        Text(
-            text = "Sing Up",
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onPrimary,
-            fontSize = 30.sp
-        )
+        Header { navController.navigateUp() }
 
         Spacer(modifier = Modifier.height(30.dp))
 
+        // Texfields customizados (Utils.kt)
         CustomOutlinedTextField(
             value = username,
             onValueChange = { registerViewModel.onUsernameChange(it) },
@@ -160,13 +155,12 @@ fun RegisterScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
 
-        Button(
-            onClick = {
-                registerViewModel.register(navController)
-            }
-        ) {
-            Text("Register")
-        }
+        // Boton con efecto (Utils.kt)
+        ButtonWithEffect(
+            text = "Register",
+            onClick = {registerViewModel.register(navController)}
+        )
+
 
         // Mostrar el error en un AlertDialog si hay un error
         if (showErrorDialog && !loginResult.isNullOrBlank()) {
@@ -176,4 +170,5 @@ fun RegisterScreen(
         }
     }
 }
+
 

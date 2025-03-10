@@ -28,8 +28,7 @@ import com.appTareas.screens.loginScreen.LoginScreenViewModelFactory
 import com.appTareas.screens.registerScreen.RegisterViewModel
 import com.appTareas.screens.tareasScreen.TareasScreenViewModel
 import com.appTareas.screens.tareasScreen.TareasViewModelFactory
-import com.appTareas.screens.welcomeScreen.WelcomeScreeenViewModelFactory
-import com.appTareas.screens.welcomeScreen.WelcomeScreenViewModel
+
 import com.appTareas.ui.theme.Ej2_LoginSpotifyTheme
 
 class MainActivity : ComponentActivity() {
@@ -71,20 +70,14 @@ class MainActivity : ComponentActivity() {
 
                 ) { innerPadding ->
 
-                    //val navController = rememberNavController()
-
-
                     val application = LocalContext.current.applicationContext as Application
 
+                    // Viewmodels
                     val loginScreenViewModel: LoginScreenViewModel = viewModel(factory = LoginScreenViewModelFactory(application))
                     val registerViewModel: RegisterViewModel = viewModel()
-
-                    val welcomeScreenViewModel: WelcomeScreenViewModel = viewModel(factory = WelcomeScreeenViewModelFactory(application))
-
                     val adminScreenViewModel: AdminScreenViewModel = viewModel(
                         factory = AdminScreenViewModelFactory(application)
                     )
-
                     val tareasScreenViewModel: TareasScreenViewModel = viewModel(
                         factory = TareasViewModelFactory(application)
                     )
@@ -94,7 +87,6 @@ class MainActivity : ComponentActivity() {
                         navController = navController,
                         loginScreenViewModel = loginScreenViewModel,
                         registerViewModel = registerViewModel,
-                        welcomeScreenViewModel = welcomeScreenViewModel,
                         adminViewModel = adminScreenViewModel,
                         tareasScreenViewModel = tareasScreenViewModel,
                         isDarkMode = isDarkMode,

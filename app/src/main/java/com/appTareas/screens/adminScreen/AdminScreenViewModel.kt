@@ -21,8 +21,6 @@ class AdminScreenViewModel(
     private var _tareas = MutableLiveData<List<TareaDTO?>?>(emptyList())
     val tareas: MutableLiveData<List<TareaDTO?>?> get() = _tareas
 
-    private val _tarea = MutableLiveData<TareaDTO?>()
-    val tarea: LiveData<TareaDTO?> get() = _tarea
 
     private val _mensajeError = MutableLiveData<String?>()
     val mensajeError: LiveData<String?> get() = _mensajeError
@@ -230,12 +228,6 @@ class AdminScreenViewModel(
 
 
 
-
-
-    fun resetError() {
-        _mensajeError.value = null
-    }
-
     private fun showDialog(tittle:String, message: String) {
         _operationResult.postValue(message) // Guarda el mensaje de error
         _tittleDialog.value = tittle
@@ -252,7 +244,7 @@ class AdminScreenViewModel(
     private fun extractErrorMessage(errorBody: String?): String {
         return try {
             if (errorBody.isNullOrEmpty()) {
-                "Error, no autorizado"
+                "Error, no tienes un ROL autorizado "
             } else {
                 val jsonObject = JSONObject(errorBody)
                 jsonObject.optString("message", "Ocurrió un error desconocido")
@@ -262,9 +254,6 @@ class AdminScreenViewModel(
         }
     }
 
-    fun resetTarea() {
-        _tarea.value = null
-    }
 
     fun resetTareas(){
         _tareas.value = null

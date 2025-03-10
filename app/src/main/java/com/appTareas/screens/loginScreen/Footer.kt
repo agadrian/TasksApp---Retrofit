@@ -16,9 +16,11 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +28,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.AnnotatedString
@@ -41,11 +44,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.appTareas.R
 import com.appTareas.navegation.AppScreen
+import com.appTareas.utils.TextWithEffect
 import com.appTareas.utils.customToast
-
-
-
-
 
 
 @Composable
@@ -54,9 +54,6 @@ fun Footer(
     navController: NavController
 ){
 
-    var isPressedForgotPswd by remember { mutableStateOf(false) }
-    var isPressedSingUp by remember { mutableStateOf(false) }
-
 
     Column(modifier = Modifier
         .fillMaxWidth(),
@@ -64,17 +61,18 @@ fun Footer(
     ) {
 
 
-        ClickableTextUnderline(
-            text = "Forgot your password?",
-            onClick = { customToast(context, "Redirecting to forgot password") },
-            onPressChangeColor = { isPressedForgotPswd = it},
-            isPressed = isPressedForgotPswd,
-            colorUnpressed = MaterialTheme.colorScheme.onPrimary,
-            colorPressed = colorResource(R.color.green)
+        TextWithEffect(
+            texto = "Forgot your password?",
+            onClick = { customToast(context, "Available soon...") },
+            defaultColor = MaterialTheme.colorScheme.onPrimary,
+            pressedColor = MaterialTheme.colorScheme.primary
+
         )
 
 
         Spacer(Modifier.height(15.dp))
+
+
 
         Text(
             text = "Don't have an account?",
@@ -86,27 +84,15 @@ fun Footer(
         Spacer(Modifier.height(5.dp))
 
 
-        Text(
-            text = "Sing up",
-            modifier = Modifier.clickable {
-                navController.navigate(
-                    AppScreen.RegisterScreen.route
-                )
-            }
+        TextWithEffect(
+            texto = "Sign Up",
+            onClick = {navController.navigate(AppScreen.RegisterScreen.route)},
+            defaultColor = MaterialTheme.colorScheme.onPrimary,
+            pressedColor = MaterialTheme.colorScheme.primary
         )
 
-//        ClickableTextUnderline(
-//            text = "Sing up for Spotify.",
-//            onClick = { navController.navigate(
-//                route = AppScreen.RegisterScreen
-//            ) },
-//            onPressChangeColor = { isPressedSingUp = it },
-//            isPressed = isPressedSingUp,
-//            colorUnpressed = MaterialTheme.colorScheme.onPrimary,
-//            colorPressed = colorResource(R.color.green)
-//        )
 
-        Spacer(Modifier.height(30.dp))
+        Spacer(Modifier.height(50.dp))
 
 
         // Texto con palabras clicables para pasarselo a la funcion.
@@ -156,51 +142,9 @@ fun Footer(
 }
 
 
-@Composable
-fun ClickableTextUnderline(
-    text: String,
-    onClick: () -> Unit,
-    onPressChangeColor: (Boolean) -> Unit,
-    isPressed: Boolean,
-    colorUnpressed: Color,
-    colorPressed: Color
-){
-
-    val focusRequester = remember { FocusRequester() }
-    var isFocused by remember { mutableStateOf(false) }
-
-
-    Text(
-        text = text,
-        textDecoration = TextDecoration.Underline,
-        fontSize = if (isFocused) 15.sp else 14.sp,
-        color = if (isPressed){
-            colorPressed
-        } else {
-            colorUnpressed
-        },
-        fontWeight = FontWeight.Bold,
-        modifier = Modifier
-            .clickable(
-                onClick = onClick,
-                onClickLabel = "Forgot Password"
-            ).pointerInput(Unit){
-                detectTapGestures (
-                    onPress = {
-                        onPressChangeColor(true)
-                        tryAwaitRelease()
-
-                        onPressChangeColor(false)
-                    }
-                )
-            }
-            .focusRequester(focusRequester)
-            .onFocusChanged { isFocused = it.isFocused }
-            .focusable()
-    )
-}
-
-
+/**
+ * Hacer que una frase completa pueda tener palabras clicables en cualquier posicion
+ */
 @Composable
 fun TextWithClicablesWords(context: Context, text: AnnotatedString){
 

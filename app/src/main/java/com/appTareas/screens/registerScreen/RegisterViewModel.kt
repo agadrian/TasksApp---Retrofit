@@ -61,21 +61,14 @@ class RegisterViewModel : ViewModel() {
     }
 
 
-    // Variables para mostrar el resultado y manejar el estado de carga
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading = _isLoading
-
     private val _loginResult = MutableLiveData<String?>()
     val loginResult: LiveData<String?> = _loginResult
 
-    private val _navigationEvent = MutableStateFlow<String?>(null) // Para emitir un evento de navegación
-    val navigationEvent = _navigationEvent
 
 
 
     fun register(navController: NavController) {
         viewModelScope.launch {
-            _isLoading.value = true
             try {
                 val request = RegisterRequest(
                     username.value,
@@ -93,11 +86,9 @@ class RegisterViewModel : ViewModel() {
                     val email = response.body()?.email
                     if (username != null && email != null) {
                         _loginResult.value = "Registro exitoso"
-                        _navigationEvent.value = "success"
 
+                        // Volver al login
                         navController.popBackStack()
-
-
                     } else {
                         showError("Error inesperado: usuario o email vacíos")
                     }
@@ -110,8 +101,6 @@ class RegisterViewModel : ViewModel() {
                 }
             } catch (e: Exception) {
                 showError("Error de conexión: ${e.message}")
-            } finally {
-                _isLoading.value = false
             }
         }
     }
@@ -130,8 +119,8 @@ class RegisterViewModel : ViewModel() {
     }
 
     private fun showError(message: String) {
-        _loginResult.postValue(message) // Guarda el mensaje de error
-        _showErrorDialog.value = true   // Activa el error
+        _loginResult.postValue(message)
+        _showErrorDialog.value = true
 
     }
 

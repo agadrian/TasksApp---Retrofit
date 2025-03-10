@@ -1,5 +1,6 @@
 package com.appTareas.screens.loginScreen
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,16 +20,12 @@ class LoginScreenViewModel(
     private val tokenManager: TokenManager
 ) : ViewModel() {
 
-
-
     private val _email = MutableStateFlow("")
     val email = _email
 
     private val _password = MutableStateFlow("")
     val password = _password
 
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading
 
     private val _loginResult = MutableLiveData<String?>()
     val loginResult: LiveData<String?> = _loginResult
@@ -53,9 +50,10 @@ class LoginScreenViewModel(
 
     fun login(navController: NavController) {
         viewModelScope.launch {
-            _isLoading.value = true
+
             try {
                 val response = RetrofitClient.apiService.login(LoginRequest(email.value, password.value))
+
 
                 if (response.isSuccessful) {
                     val token = response.body()?.token
@@ -77,9 +75,8 @@ class LoginScreenViewModel(
                     showError(errorMessage)
                 }
             } catch (e: Exception) {
+                Log.e("errorConexion", e.toString())
                 showError("Error de conexión: ${e.message}")
-            } finally {
-                _isLoading.value = false
             }
         }
     }

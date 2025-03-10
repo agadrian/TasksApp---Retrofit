@@ -12,6 +12,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -31,12 +32,8 @@ fun LoginScreen(
     onDarkModeChange: (Boolean) -> Unit
 ){
 
-
     val context = LocalContext.current
-    //val tokenManager = remember { TokenManager(context) } // Inicializar TokenManager
-    //val loginViewModel = remember { MainScreenViewModel(tokenManager) } // Pasar TokenManager
-
-
+    val scrollState = rememberScrollState()
     val focusManager = androidx.compose.ui.platform.LocalFocusManager.current
 
     val socialButtons = listOf(
@@ -51,7 +48,8 @@ fun LoginScreen(
     val password by loginScreenViewModel.password.collectAsState()
     val isVisiblePassword by loginScreenViewModel.isVisiblePassword.collectAsState()
 
-    val scrollState = rememberScrollState()
+    val loginResult by loginScreenViewModel.loginResult.observeAsState()
+    val showErrorDialog by loginScreenViewModel.showErrorDialog.collectAsState()
 
     Column(
         modifier
@@ -85,7 +83,8 @@ fun LoginScreen(
             loginScreenViewModel = loginScreenViewModel,
             isVisiblePassword = isVisiblePassword,
             navController = navController,
-            context = context
+            loginResult = loginResult,
+            showErrorDialog = showErrorDialog
         )
 
         Spacer(Modifier.height(25.dp))
@@ -93,10 +92,3 @@ fun LoginScreen(
         Footer(context, navController)
     }
 }
-
-//@Preview
-//@Composable
-//fun PreviewSpotify(){
-//    MainScreen(navController = rememberNavController(), Modifier, MainScreenViewModel(TokenManager(
-//        LocalContext.current)), true, {})
-//}
