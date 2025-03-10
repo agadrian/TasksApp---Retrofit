@@ -91,7 +91,8 @@ fun AppNavigation(
             route = AppScreen.TareasScreen.route
         ){
             TareasScreen(
-                tareasViewModel = tareasScreenViewModel
+                tareasViewModel = tareasScreenViewModel,
+                navController
             )
         }
 

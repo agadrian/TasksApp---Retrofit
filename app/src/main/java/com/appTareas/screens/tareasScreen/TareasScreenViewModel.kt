@@ -61,7 +61,7 @@ class TareasScreenViewModel(
         cargarTareas()
     }
 
-    private fun cargarTareas() {
+    fun cargarTareas() {
         viewModelScope.launch {
             try {
                 val token = tokenManager.getToken()  // Obtener el token del TokenManager
@@ -74,11 +74,17 @@ class TareasScreenViewModel(
                 if (response.isSuccessful) {
                     _tasks.value = response.body() ?: emptyList()
                 } else {
+
+                    _tasks.value = emptyList()
                     // Guardamos el error antes de procesarlo
                     val errorBodyString = response.errorBody()?.string()
                     val errorMessage = extractErrorMessage(errorBodyString)
 
-                    showError(errorMessage)
+                    // Evitar dialogo de error cuando no hay tareas, ya que la api devuelve expcecion en vez de una lista vacia
+                    if (!errorMessage.contains("no tiene tareas en este momento", ignoreCase = true)){ showError(errorMessage)
+                    }
+
+
                 }
             } catch (e: Exception) {
                 showError("Error de conexión: ${e.message}")

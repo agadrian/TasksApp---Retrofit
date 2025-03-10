@@ -1,5 +1,6 @@
 package com.appTareas.screens.tareasScreen
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,9 +9,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.AlertDialog
@@ -25,26 +29,28 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.appTareas.utils.ErrorDialog
 
 
 @Composable
 fun TareasScreen(
-    tareasViewModel: TareasScreenViewModel
+    tareasViewModel: TareasScreenViewModel,
+    navController: NavController
 ) {
 
     val tasks by tareasViewModel.tasks.collectAsState()
-    val errorMessage by tareasViewModel.errorMessage.collectAsState()
 
     val titulo by tareasViewModel.titulo.collectAsState()
     val descripcion by tareasViewModel.descripcion.collectAsState()
@@ -53,6 +59,9 @@ fun TareasScreen(
     val tareasResult by tareasViewModel.tareasResult.observeAsState()
     val showErrorDialog by tareasViewModel.showErrorDialog.collectAsState()
 
+    LaunchedEffect(Unit) {
+        tareasViewModel.cargarTareas()
+    }
 
 
 
@@ -69,23 +78,11 @@ fun TareasScreen(
 
         ) {
 
-            Text(
-                text = "My Tasks",
-                fontSize = 30.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onPrimary
-
-            )
+            Header(onBackClick = {navController.navigateUp()})
 
             Spacer(Modifier.height(40.dp))
 
-            // Si hay algún error, lo mostramos
-            if (!errorMessage.isNullOrEmpty()) {
-                Text(errorMessage!!, color = Color.Red, fontWeight = FontWeight.Bold)
-            }
+
 
             // Mostrar el error en un AlertDialog si hay un error
             if (showErrorDialog && !tareasResult.isNullOrBlank()) {
@@ -154,7 +151,9 @@ fun TareasScreen(
 }
 
 
-
+/**
+ * Dialogo para añadir la tarea
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddTaskDialog(
@@ -221,4 +220,48 @@ fun AddTaskDialog(
             }
         }
     )
+}
+
+@Composable
+fun Header(
+    onBackClick: () -> Unit
+){
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row(
+            Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            IconButton(
+                modifier = Modifier
+                    .size(40.dp),
+                onClick = onBackClick
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Go back",
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier
+                        .size(30.dp)
+                )
+            }
+
+            Spacer(Modifier.width(70.dp))
+
+            Text(
+                text = "My Tasks",
+                fontSize = 30.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Start,
+                color = MaterialTheme.colorScheme.onPrimary
+
+            )
+        }
+    }
 }
