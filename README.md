@@ -16,7 +16,7 @@ La aplicación está diseñada para ser fácil de usar, con una interfaz clara y
 - Diseño intuitivo y claro.
 - Mensajes de error visibles: Los errores se muestran en cuadros de diálogo para no afectar la navegación.
 - Flujo de usuario optimizado: Se minimiza la cantidad de pasos necesarios para realizar acciones comunes.
-- Modo oscuro y modo claro alternable, a elección del usuario.
+- Modo oscuro y modo claro alternable, a elección del usuario. Haciendo uso de **MaterialTheme.colorScheme**
 
 ## Ejemplo de funcionalidad
 Disponible una prueba visual de la App en el archivo de video adjunto al proyedcto.
