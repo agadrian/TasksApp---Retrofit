@@ -1,13 +1,16 @@
 # Gestor de Tareas - App con Jetpack Compose y MongoDB
 
 ## Descripción del proyecto
+
 Esta aplicación permite a los usuarios gestionar sus tareas de manera eficiente. Con una interfaz intuitiva y funcional, los usuarios pueden agregar, marcar como completadas y eliminar tareas. Además, la aplicación maneja errores mediante cuadros de diálogo, con mensajes claros e intuitivos.
 
 Por otro lado, tiene una segunda pantalla o zona de Administrador, donde un usuario que tenga el rol ADMIN, puede gestionar lass tareas de cualquier usuario registrado en el sistema que aloja la App. Es decir, puede tanto crearle tareas, como eliminarlas, editarlas, ver todas las tareas del sistema, ver todas las tareas de algun usuario concreto, etc...
 
 ## Características principales
+
 - Registro e inicio de sesión: Permite a los usuarios autenticarse. Lógica realizada mediante la API REST creada en SpringBoot usando seguridad con JWT y otros métodos, como encriptación a la hora de guardar la contraseña, etc...
 - Base de datos usada para ello, MongoDB.
+- Uso de SharedPreferences a la hora de guardar el token de inicio de sesión.
 - Interfaz basada en JetpackCompose, haciendo la unión con la API mediante [**RetroFit**](app/src/main/java/com/appTareas/retrofit/ApiService.kt).
 
 ## Usabilidad
@@ -19,10 +22,26 @@ La aplicación está diseñada para ser fácil de usar, con una interfaz clara y
 - Flujo de usuario optimizado: Se minimiza la cantidad de pasos necesarios para realizar acciones comunes.
 - Modo oscuro y modo claro alternable, a elección del usuario. Haciendo uso de **MaterialTheme.colorScheme**
 
-## Ejemplo de funcionalidad
-Disponible una prueba visual de la App en el archivo de video adjunto al proyedcto.
+## Ejemplo de funcionalidad y Documentación Código
+
+**Disponible una prueba visual de la App en el archivo de video adjunto al proyecto**
+
+Uso de SharedPreferences para guardar el token mediante la clase **TokenManager**:
+
+![DOC](app/src/main/res/screenshoots/doc.png)
+
+He hecho uso de ViewModelFactory en los casos que requiero parámetros adicionales en el ViewModel (en todos excepto en el RegisterViewModel) ya que requiero de un Application para poder usar el TokenManager y acceder a SharedPreferences:
+
+![DOC](app/src/main/res/screenshoots/doc2.png)
+
+![DOC](app/src/main/res/screenshoots/doc3.png)
+
+En cuanto a la navegación, la he realizado haciendo uso de unna sealedClass [AppScreen](app/src/main/java/com/appTareas/navegation/AppScreen.kt) y la función Composable [AppNavigation](app/src/main/java/com/appTareas/navegation/AppScreen.kt)
+
+Por el resto de código, se puede ver de forma organizada en los respectivos [directorios](app/src/main/java/com/appTareas/screens)
 
 ## Futuras implementaciones
+
 La idea es conitnuar este desasrollo en el tiempo, implementandon nuevas características y funcionalidades que mejoren la experiencia del usuario tales como:
 
 - Añadir notificaciones y recordatorios
