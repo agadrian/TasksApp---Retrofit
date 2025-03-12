@@ -52,7 +52,7 @@ fun AppNavigation(
         startDestination = AppScreen.LoginScreen.route
     ) {
 
-        // Ruta especifica de MainScreen
+        // Ruta especifica de LoginScreen
         composable(
             route = AppScreen.LoginScreen.route
         ){
