@@ -38,7 +38,7 @@ He hecho uso de ViewModelFactory en los casos que requiero parámetros adicional
 
 En cuanto a la navegación, la he realizado haciendo uso de unna sealedClass [AppScreen](app/src/main/java/com/appTareas/navegation/AppScreen.kt) y la función Composable [AppNavigation](app/src/main/java/com/appTareas/navegation/AppScreen.kt)
 
-Por el resto de código, se puede ver de forma organizada en los respectivos [directorios](app/src/main/java/com/appTareas/screens)
+Por el resto de código, se puede ver de forma organizada en los respectivos [directorios](app/src/main/java/com/appTareas/screens), donde cada Screen tiene su respectivo ViewModel para separar la lógica de la interfaz, etc.
 
 ## Futuras implementaciones
 
