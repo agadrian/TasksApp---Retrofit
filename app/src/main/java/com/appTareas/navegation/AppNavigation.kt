@@ -34,6 +34,9 @@ import com.appTareas.screens.tareasScreen.TareasScreen
 import com.appTareas.screens.tareasScreen.TareasScreenViewModel
 
 
+/**
+ * Funcion para navegar usando la ruta establecida
+ */
 @Composable
 fun AppNavigation(
     modifier: Modifier = Modifier,
@@ -101,9 +104,9 @@ fun AppNavigation(
 }
 
 
-
-
-
+/**
+ * Funcion composable para la barra de navegacion inferior con las dos pantallas disponibles.
+ */
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {
 
@@ -167,34 +170,8 @@ fun BottomNavigationBar(navController: NavHostController) {
                         interactionSource = remember { MutableInteractionSource() },
                         rememberRipple(color = Color.White)
                     )
-
             )
         }
     }
 }
-
-
-
-//        // Ruta especifica de WelcomeScreen
-//        composable (
-//            route = AppScreen.WelcomeScreen.route,
-//            // Configurar el argumento que recibe
-//            arguments = listOf(
-//                navArgument(name = "token") {type = NavType.StringType},
-//                navArgument(name = "username") {type = NavType.StringType},
-//                navArgument(name = "password") {type = NavType.StringType},
-//            )
-//        ) {
-//            // Recuperamos los argumentos para pasarselo y darle uso en la función WelcomeScreen
-//
-//            val token = it.arguments?.getString("token") ?: "Sin token"
-//            val username = it.arguments?.getString("username") ?: "Sin username"
-//            val password = it.arguments?.getString("password") ?: "Sin password"
-//
-//            WelcomeScreen(
-//                navController = navControlador,
-//                welcomeScreenViewModel = welcomeScreenViewModel,
-//                modifier = modifier
-//            )
-//        }
 

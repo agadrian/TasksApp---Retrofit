@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
 
             var isDarkMode by rememberSaveable { mutableStateOf(true) }
 
-            // Compobar si esta logeado o no para mostrar o no la bottom bar
+            // Compobar si esta logeado o no para mostrar o no la bottom bar, a traves del token que se obtiene
             var isLogged by rememberSaveable { mutableStateOf(false) }
             val tokenManager = TokenManager(LocalContext.current.applicationContext as Application)
             isLogged = tokenManager.getToken() != null
@@ -72,11 +72,16 @@ class MainActivity : ComponentActivity() {
                     val application = LocalContext.current.applicationContext as Application
 
                     // Viewmodels
-                    val loginScreenViewModel: LoginScreenViewModel = viewModel(factory = LoginScreenViewModelFactory(application))
+                    val loginScreenViewModel: LoginScreenViewModel = viewModel(
+                        factory = LoginScreenViewModelFactory(application)
+                    )
+
                     val registerViewModel: RegisterViewModel = viewModel()
+
                     val adminScreenViewModel: AdminScreenViewModel = viewModel(
                         factory = AdminScreenViewModelFactory(application)
                     )
+
                     val tareasScreenViewModel: TareasScreenViewModel = viewModel(
                         factory = TareasViewModelFactory(application)
                     )

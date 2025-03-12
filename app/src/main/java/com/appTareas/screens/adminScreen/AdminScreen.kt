@@ -47,10 +47,10 @@ fun AdminScreen(
     val tittleDialog by adminScreenViewModel.tittleDialog.observeAsState()
     val showErrorDialog by adminScreenViewModel.showErrorDialog.collectAsState()
 
-    var tareaId by remember { mutableStateOf("") }
-    var usuarioId by remember { mutableStateOf("") }
-    var titulo by remember { mutableStateOf("") }
-    var descripcion by remember { mutableStateOf("") }
+    val usuarioId by adminScreenViewModel.usuarioId.collectAsState()
+    val tareaId by adminScreenViewModel.tareaId.collectAsState()
+    val titulo by adminScreenViewModel.titulo.collectAsState()
+    val descripcion by adminScreenViewModel.descripcion.collectAsState()
 
     Box(
         Modifier.fillMaxSize()
@@ -71,7 +71,7 @@ fun AdminScreen(
             // Id usuario
             OutlinedTextField(
                 value = usuarioId,
-                onValueChange = { usuarioId = it },
+                onValueChange = { adminScreenViewModel.onUsuarioIdChange(it) },
                 label = { Text("User ID") },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -81,7 +81,7 @@ fun AdminScreen(
             // Id tarea
             OutlinedTextField(
                 value = tareaId,
-                onValueChange = { tareaId = it },
+                onValueChange = { adminScreenViewModel.onTareaIdChange(it) },
                 label = { Text("Task ID") },
                 modifier = Modifier.fillMaxWidth()
 
@@ -92,7 +92,7 @@ fun AdminScreen(
             // Titulo tarea
             OutlinedTextField(
                 value = titulo,
-                onValueChange = { titulo = it },
+                onValueChange = { adminScreenViewModel.onTituloChange(it) },
                 label = { Text("Tittle") },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -102,7 +102,7 @@ fun AdminScreen(
             // Descripcion tarea
             OutlinedTextField(
                 value = descripcion,
-                onValueChange = { descripcion = it },
+                onValueChange = { adminScreenViewModel.onDescripcionChange(it) },
                 label = { Text("Description") },
                 modifier = Modifier.fillMaxWidth()
             )

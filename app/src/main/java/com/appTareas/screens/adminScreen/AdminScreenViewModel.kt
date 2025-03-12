@@ -18,14 +18,39 @@ class AdminScreenViewModel(
     private val tokenManager: TokenManager
 ): ViewModel() {
 
+    var tareaId = MutableStateFlow("")
+        private set
+
+    var usuarioId = MutableStateFlow("")
+        private set
+
+    var titulo = MutableStateFlow("")
+        private set
+
+    var descripcion = MutableStateFlow("")
+        private set
+
+    fun onTareaIdChange(newId: String) {
+        tareaId.value = newId
+    }
+
+    fun onUsuarioIdChange(newId: String) {
+        usuarioId.value = newId
+    }
+
+    fun onTituloChange(newTitulo: String) {
+        titulo.value = newTitulo
+    }
+
+    fun onDescripcionChange(newDescripcion: String) {
+        descripcion.value = newDescripcion
+    }
+
     private var _tareas = MutableLiveData<List<TareaDTO?>?>(emptyList())
     val tareas: MutableLiveData<List<TareaDTO?>?> get() = _tareas
 
-
     private val _mensajeError = MutableLiveData<String?>()
     val mensajeError: LiveData<String?> get() = _mensajeError
-
-
 
     private val _showErrorDialog = MutableStateFlow(false)
     val showErrorDialog: StateFlow<Boolean> = _showErrorDialog
